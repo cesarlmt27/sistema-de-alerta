@@ -63,6 +63,7 @@ def __init__(self, fecha, humedad, arduino_asignado):
     self.fecha = fecha
     self.humedad = humedad
     self.arduino_asignado = arduino_asignado
+    
 
 #FALTAN SENSORES
 new_sensor1 = Sensor1(fecha=datetime.now(), temperatura=25.5, arduino_asignado='Arduino1')
