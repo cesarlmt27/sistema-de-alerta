@@ -1,0 +1,23 @@
+
+
+<a href="/adduser">Add User</a>
+<a href="/ver_datos">User view</a>
+<a href="/profile">Profile</a>
+
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Temperatura</th>
+      </tr>
+    </thead>
+    <tbody>    
+        {% for user in myUser %}
+            <tr>
+                <td>{{user.fecha}}</td>
+                <td>{{user.temperatura}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+bootstrap second table

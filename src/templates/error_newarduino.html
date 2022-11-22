@@ -1,0 +1,22 @@
+{% extends "layouts/layout1.html" %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <h1 class="masthead-heading text-uppercase mb-0">ERROR MIENTRAS SE ASIGNABA ARDUINO</h1>
+        
+        <div class="login-page">
+            <div class="form">
+              <form class="login-form">
+                <input type="text" name= "arduino" placeholder="#nombrearduino"/>
+                <form action="/new_arduino" method="post">
+                </form>
+              </form>
+            </div>
+        </div>
+        
+        <!-- Icon Divider-->
+        <!-- Masthead Subheading-->
+    </div>
+</header>
+
+        {% endblock %}

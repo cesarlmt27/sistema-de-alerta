@@ -1,0 +1,24 @@
+{% extends "layouts/layout1.html" %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" src="/static/logo.jpg" alt="..." />
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Añada un arduino antes de continuar</h1>
+        
+        <div class="login-page">
+            <div class="form">
+                <form method="POST" action="/new_arduino">
+                    <input type="text" name= "arduino" placeholder="#nombrearduino"/>
+                    <input type="submit" />
+                </form>
+              </form>
+            </div>
+        </div>
+        <!-- Icon Divider-->
+        <!-- Masthead Subheading-->
+    </div>
+</header>
+
+        {% endblock %}

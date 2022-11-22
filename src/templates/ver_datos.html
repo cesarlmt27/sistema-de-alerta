@@ -1,0 +1,51 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/static/tablestyle.css" /> 
+    <title>Link CSS to HTML</title>
+</head>
+<h2>Tabla de temperatura</h2>
+<h2>{{arduino_actual}}</h2>
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Temperatura</th>
+        </tr>
+        </thead>
+        <tbody>
+            
+            {% for i in sensortemp %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.fecha}}</td>
+            <td>{{i.temperatura}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>humedad</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sensor in sensorhumedad %}
+        <tr>
+            <td>{{sensor.id}}</td>
+            <td>{{sensor.fecha}}</td>
+            <td>{{sensor.humedad}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
