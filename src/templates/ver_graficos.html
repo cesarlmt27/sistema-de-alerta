@@ -1,0 +1,43 @@
+{% extends "layouts/layout1.html" %}
+
+{% block content %}
+#chart.min.js
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>four Charts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+</head>
+<body>
+    <canvas id="myChart1" width="400" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('myChart1').getContext('2d');
+        var myChart1 = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{labels1 | safe}},
+                datasets: [{
+                    label: 'Sensor de temperatura',
+                    data: [{{values1 | safe}}],
+                    fill: false,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    lineTension: 0.1
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+{% endblock %}
+
+
+

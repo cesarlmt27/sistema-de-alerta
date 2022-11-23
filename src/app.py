@@ -2,8 +2,16 @@ from flask import Flask, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_login import LoginManager, current_user
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import literal
+
+
+#HAY QUE:
+#1.- asignar todos los nuevos sensores y poder graficarlos + sus datos de distribucion
+#2.- poder ver con admin los datos de todos los sensores (crear una pagina que imprima todos los sensores que solo pueda accederse con rol de admin)
+#3.- parametros estandar de cada sensor (nueva base de datos)
+#4.- agregar alerta de sensores al correo 
+#5.- hacer posible que se asigne mas de un arduino a un usuario
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:N1d44@localhost/Proyectos en Tic'
@@ -76,14 +84,43 @@ security = Security(app, user_datastore)
 
 @app.route('/')
 def index():
-    
+        
     return render_template('index.html')
 
+
+@app.route('/ver_graficos', methods=['GET', 'POST'])
+@login_required
+def ver_graficos():
+    
+    user = User.query.filter_by(email=current_user.email).first()
+    if user.arduino_asignado == None:
+        return errorpage("No tiene ningun arduino asignado")
+    arduino_actual = user.arduino_asignado
+    sensortemp = Sensor1.query.filter_by(arduino_asignado=arduino_actual).all()
+    sensorhumedad = Sensor2.query.filter_by(arduino_asignado=arduino_actual).all()
+    labels1 = []
+    values1 = []
+    for i in sensortemp:
+        labels1.append(str(i.fecha))
+        values1.append(str(i.temperatura))
+    labels2 = []
+    values2 = []
+    for i in sensorhumedad:
+        labels2.append(str(i.fecha))
+        values2.append(str(i.humedad))
+    #agregar los demas sensores
+
+    return render_template('ver_graficos.html', labels1=labels1, values1=values1, labels2=labels2, values2=values2)#AGREGAR SENSORES EXTRAS
 
 @app.route('/test_add_values', methods=['GET', 'POST'])
 @login_required
 def test_add_values():
     return render_template('test_add_values.html')
+
+@app.route('/errorpage', methods=['GET', 'POST'])
+@login_required
+def errorpage(descripcionerror):
+    return render_template('errorpage.html', descripcionerror=descripcionerror)
 
 @app.route('/test_add_data', methods=['POST'])
 @login_required
