@@ -98,11 +98,11 @@ def ver_graficos():
     arduino_actual = user.arduino_asignado
     sensortemp = Sensor1.query.filter_by(arduino_asignado=arduino_actual).all()
     sensorhumedad = Sensor2.query.filter_by(arduino_asignado=arduino_actual).all()
-    labels1 = [1,2,3,4,5]
-    values1 = [1,2,3,4,5]
-    #for i in sensortemp:
-        #labels1.append(str(i.fecha))
-        #values1.append((i.temperatura))
+    labels1 = []
+    values1 = []
+    for i in sensortemp:
+        labels1.append(str(i.fecha))
+        values1.append((i.temperatura))
     labels2 = []
     values2 = []
     for i in sensorhumedad:

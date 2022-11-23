@@ -1,43 +1,44 @@
-{% extends "layouts/layout1.html" %}
-
-{% block content %}
-
+<html>  
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>four Charts</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/tablestyle.css" /> <meta charset="UTF-8">
+    <!-- chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"
+     integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <title>Graficos</title>
 </head>
 <body>
-    <canvas id="myChart1" width="400" height="400"></canvas>
+    <br /><br /><br /><br />
+    <canvas id="myChart" max-width="400" max-height="400"></canvas>
     <script>
-        var ctx = document.getElementById('myChart1').getContext('2d');
-        var myChart1 = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: {{labels1 | safe}},
-                datasets: [{
-                    label: 'Sensor de temperatura',
-                    data: [{{values1 | safe}}],
-                    fill: false,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    lineTension: 0.1
-                }]
-            },
-            options: {
-                responsive: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{labels1 | safe}},
+            datasets: [{
+                label: 'Temperatura',
+                data: {{values1 | safe}},
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
     </script>
 </body>
-
-{% endblock %}
-
-
-
+</html>
