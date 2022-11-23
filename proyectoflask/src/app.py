@@ -98,16 +98,16 @@ def ver_graficos():
     arduino_actual = user.arduino_asignado
     sensortemp = Sensor1.query.filter_by(arduino_asignado=arduino_actual).all()
     sensorhumedad = Sensor2.query.filter_by(arduino_asignado=arduino_actual).all()
-    labels1 = []
-    values1 = []
-    for i in sensortemp:
-        labels1.append(str(i.fecha))
-        values1.append(str(i.temperatura))
+    labels1 = [1,2,3,4,5]
+    values1 = [1,2,3,4,5]
+    #for i in sensortemp:
+        #labels1.append(str(i.fecha))
+        #values1.append((i.temperatura))
     labels2 = []
     values2 = []
     for i in sensorhumedad:
         labels2.append(str(i.fecha))
-        values2.append(str(i.humedad))
+        values2.append((i.humedad))
     #agregar los demas sensores
 
     return render_template('ver_graficos.html', labels1=labels1, values1=values1, labels2=labels2, values2=values2)#AGREGAR SENSORES EXTRAS
