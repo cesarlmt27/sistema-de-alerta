@@ -4,6 +4,7 @@ from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMix
 from flask_login import LoginManager, current_user
 from datetime import datetime, timezone
 from sqlalchemy import literal
+import pytz
 
 
 #HAY QUE:
@@ -74,13 +75,16 @@ def __init__(self, fecha, humedad, arduino_asignado):
     
 
 #FALTAN SENSORES
-new_sensor1 = Sensor1(fecha=datetime.now(), temperatura=25.5, arduino_asignado='Arduino1')
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
 #create a user to test with
-
+local_tz = pytz.timezone('America/Santiago')
+def utc_to_local(utc_dt):
+    local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+    return local_tz.normalize(local_dt)
+    
 
 @app.route('/')
 def index():
@@ -126,9 +130,9 @@ def errorpage(descripcionerror):
 @login_required
 def test_add_data():
     if request.form['num']== '1':
-
+        
         data2 = request.form['temp']
-        fecha = datetime.now()
+        fecha = datetime.utcnow()
         arduino_asignado = request.form['arduino_asignado']
         new_sensor1 = Sensor1(fecha=fecha, temperatura=data2, arduino_asignado= arduino_asignado)
         db.session.add(new_sensor1)
@@ -139,7 +143,7 @@ def test_add_data():
     if request.form['num']== '2':
 
         data2 = request.form['temp']
-        fecha = datetime.now()
+        fecha = datetime.utcnow()
         arduino_asignado = request.form['arduino_asignado']
         new_sensor2 = Sensor2(fecha=fecha, humedad=data2, arduino_asignado= arduino_asignado)
         db.session.add(new_sensor2)
