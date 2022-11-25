@@ -15,6 +15,7 @@ flask-security = "*"
 email-validator = "*"
 bcrypt = "*"
 pytz = "*"
+flask-mail = "*"
 
 [dev-packages]
 

@@ -5,7 +5,7 @@ from flask_login import LoginManager, current_user
 from datetime import datetime, timezone
 from sqlalchemy import literal
 import pytz
-
+from flask_mail import Mail, Message
 
 #HAY QUE:
 #1.- asignar todos los nuevos sensores y poder graficarlos + sus datos de distribucion
@@ -22,6 +22,17 @@ app.config['SECURITY_PASSWORD_SALT'] = app.config['SECRET_KEY']
 app.debug = True
 db = SQLAlchemy(app)
 login_manager = LoginManager()
+
+
+#configuracion del mail
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = '62935fc9d67a8b'
+app.config['MAIL_PASSWORD'] = 'c2a850cb66913f'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
 
 # Define models
 roles_users = db.Table('roles_users',
@@ -154,8 +165,16 @@ def test_add_data():
     return render_template('index.html')
 
 
-    
-           
+@app.route('/alerta_mail', methods=['GET', 'POST'])
+@login_required
+def alerta_mail():
+    if request.method == 'POST':
+        msg = Message('Alerta de temperatura', sender = 'noreply@demo.com', recipients = [current_user.email])
+        msg.body = "La temperatura ha superado el limite establecido"
+        mail.send(msg)
+        return "Mail enviado"
+    return render_template('index.html')
+        
 
 #EL EN FUTURO RENDERIZAR OTRA DIRECCION HTML EN LA QUE DIGA SE HAN ENCONTRADO X ALERTAS 
 

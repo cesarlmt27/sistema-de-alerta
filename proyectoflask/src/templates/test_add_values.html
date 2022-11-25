@@ -11,11 +11,19 @@
             <input id="num" name="num" type="text" />
             <label>temp:</label>
             <input type="number" step="0.01" name="temp" id="temp">
-            <label>nombrearduino:</label>
+            <label>nombre de arduino:</label>
             <input id="arduino_asignado" name="arduino_asignado" type="text" />
             <input type="submit" />
         </form>
         
+        <div>
+        <form method="POST" action="/alerta_mail">
+            <button name="mandarcorreo" value="mandarcorreo">Mandar correo</button>
+            
+        </form>
+        
+        </div>
+
         <!-- Icon Divider-->
         <!-- Masthead Subheading-->
     </div>
