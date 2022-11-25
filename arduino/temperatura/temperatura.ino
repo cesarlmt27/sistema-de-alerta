@@ -1,6 +1,6 @@
 //Código de la simulación en Tinkercad
 
-#define TEMP_SENSOR A0
+#define TEMP_SENSOR A1
 #define R_LED 4
 float tempValue;
 float tempInput;
@@ -8,7 +8,6 @@ float tempInput;
 void setup() {
   Serial.begin(9600);
   pinMode(R_LED, OUTPUT);
-  pinMode(TEMP_SENSOR, INPUT);
 }
 
 void loop() {

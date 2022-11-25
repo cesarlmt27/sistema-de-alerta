@@ -4,7 +4,6 @@ float ldrInput;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(LDR, INPUT);
   pinMode(G_LED, OUTPUT);
 } 
  
