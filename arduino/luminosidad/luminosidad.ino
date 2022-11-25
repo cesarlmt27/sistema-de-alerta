@@ -1,23 +1,23 @@
+#define LDR A0
+#define G_LED 2
+float ldrInput;
+
 void setup() {
   Serial.begin(9600);
-  pinMode(A0, INPUT);
-  pinMode(4, OUTPUT);
+  pinMode(G_LED, OUTPUT);
 } 
  
 void loop() {
-  int valorLDR = analogRead(A0);
+  ldrInput = analogRead(LDR);
 
-  if(valorLDR >= 600) {
-    digitalWrite(4, HIGH);
-    Serial.print("LED ON");
-    Serial.println(valorLDR);
-    delay(1000);
-  }
-  
-  else {
-    digitalWrite(4, LOW);
+  if(ldrInput >= 600) {
+    digitalWrite(G_LED, HIGH);
+    Serial.println("LED ON");
+    Serial.println(ldrInput);
+  }else {
+    digitalWrite(G_LED, LOW);
     Serial.println("LED OFF");
-    Serial.println(valorLDR);
-    delay(1000);
+    Serial.println(ldrInput);
   }
+  delay(1000);
 }
