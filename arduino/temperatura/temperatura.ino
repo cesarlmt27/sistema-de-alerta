@@ -1,3 +1,5 @@
+//Código de la simulación en Tinkercad
+
 #define TEMP_SENSOR A0
 #define R_LED 4
 float tempValue;
