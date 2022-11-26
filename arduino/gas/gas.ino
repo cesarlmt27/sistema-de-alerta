@@ -13,7 +13,7 @@ void loop() {
     gasInput = analogRead(GAS_SENSOR);
     Serial.println(gasInput);
   
-    if(gasInput > 500){
+    if(gasInput > 600){
         digitalWrite(LED, HIGH);
     }else{
         digitalWrite(LED,LOW);
