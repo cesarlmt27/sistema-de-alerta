@@ -5,6 +5,17 @@
     <link rel="stylesheet" type="text/css" href="/static/tablestyle.css" /> 
     <title>todas las entradas</title>
 </head>
+<div>
+    <form method="POST" action="/ver_mas">
+        <label for="arduinos">Tus otros dispositivos:</label>
+        <select name="arduinos" id="arduinos">
+            {% for i in all_arduinos_From_user %}
+            <option value={{i.arduino_asignado}}>{{i.arduino_asignado}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit" />
+  </form>
+</div>
 <h2>{{arduino_actual}}</h2>
 <div class="table-wrapper">
     <table class="fl-table">

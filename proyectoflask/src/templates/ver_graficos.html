@@ -10,6 +10,17 @@
 </head>
 <body>
     <br /><br /><br /><br /><br /><br />
+    <div>
+        <form method="POST" action="/ver_mas_graficos">
+            <label for="arduinos">Tus otros dispositivos:</label>
+            <select name="arduinos" id="arduinos">
+                {% for i in all_arduinos_From_user %}
+                <option value={{i.arduino_asignado}}>{{i.arduino_asignado}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Submit" />
+      </form>
+    </div>
 <div class="card bg-dark text-white" >
 <div class="row">
     <div class="col-md-4">

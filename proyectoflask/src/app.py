@@ -118,7 +118,29 @@ class Owner(db.Model):
 def __init__(self, owner_id, arduino_asignado):
     self.owner_id = owner_id
     self.arduino_asignado = arduino_asignado
-    
+
+
+class parametrosalerta(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    temperaturamin = db.Column(db.Float())
+    temperaturamax = db.Column(db.Float())
+    gasminimo = db.Column(db.Float())
+    gasmaximo = db.Column(db.Float())
+    movimiento = db.Column(db.Boolean())
+    luminosidadmax = db.Column(db.Float())
+    luminosidadmin = db.Column(db.Float())
+    arduino_asignado = db.Column(db.String(255), db.ForeignKey('arduino.name'))
+def __init__(self, temperaturamin, temperaturamax, gasminimo, gasmaximo, movimiento, luminosidadmax, luminosidadmin, arduino_asignado):
+    self.temperaturamin = temperaturamin
+    self.temperaturamax = temperaturamax
+    self.gasminimo = gasminimo
+    self.gasmaximo = gasmaximo
+    self.movimiento = movimiento
+    self.luminosidadmax = luminosidadmax
+    self.luminosidadmin = luminosidadmin
+    self.arduino_asignado = arduino_asignado
+
+
 
 #FALTAN SENSORES
 # Setup Flask-Security
@@ -137,19 +159,28 @@ def utc_to_local(utc_dt):
 
 @app.route('/')
 def index():
-        
     return render_template('index.html')
 
+@app.route('/verificación_arduino_graficos', methods=['GET','POST'])
+@login_required
+def checkeo_datos_graficos():
+    user = User.query.filter_by(email=current_user.email).first()
+    owner = Owner.query.filter_by(owner_id=user.id).first()
 
+    if owner == None:
+        return render_template('add_arduino.html')
+    else:
+
+        #se entregan datos de sensores
+        arduino_actual = owner.arduino_asignado
+        return ver_graficos(arduino_actual)
+    
+ 
 @app.route('/ver_graficos', methods=['GET', 'POST'])
 @login_required
-def ver_graficos():
-    
+def ver_graficos(arduino_actual):
+    all_arduinos_From_user = Owner.query.filter_by(owner_id=current_user.id).all()
     user = User.query.filter_by(email=current_user.email).first()
-    myOwner = Owner.query.filter_by(owner_id=user.id).first()
-    if myOwner == None:
-        return errorpage("No tiene ningun arduino asignado")
-    arduino_actual = myOwner.arduino_asignado
     sensortemp = Sensor1.query.filter_by(arduino_asignado=arduino_actual).all()
     sensorluminosidad = Sensor2.query.filter_by(arduino_asignado=arduino_actual).all()
     sensormovimiento = Sensor3.query.filter_by(arduino_asignado=arduino_actual).all()
@@ -176,7 +207,15 @@ def ver_graficos():
         labels4.append(str(i.fecha))
         values4.append((i.gas))
 
-    return render_template('ver_graficos.html', labels1=labels1, values1=values1, labels2=labels2, values2=values2, labels3=labels3, values3=values3, labels4=labels4, values4=values4)
+    return render_template('ver_graficos.html', labels1=labels1, values1=values1, labels2=labels2, values2=values2, labels3=labels3, values3=values3, labels4=labels4, values4=values4, all_arduinos_From_user=all_arduinos_From_user, arduino_actual=arduino_actual)
+
+@app.route('/ver_mas_graficos', methods=['GET','POST'])
+@login_required
+def sellecionararduino_graficos():
+    arduino_actual = request.form['arduinos']
+    
+    return ver_graficos(arduino_actual)
+
 
 @app.route('/test_add_values', methods=['GET', 'POST'])
 @login_required
@@ -238,17 +277,28 @@ def add_user():
 
 
 
+@app.route('/ver_mas', methods=['GET','POST'])
+@login_required
+def seleccionararduino():
+    arduino_actual = request.form['arduinos']
+    
+    return ver_datos(arduino_actual)
+
+
+
 @app.route('/ver_datos', methods=['GET','POST'])
 @login_required
 def ver_datos(arduino_actual):
     
+    all_arduinos_From_user = Owner.query.filter_by(owner_id=current_user.id).all()
+
     sensortemp = Sensor1.query.filter_by(arduino_asignado=arduino_actual).all()
     sensorluminosidad = Sensor2.query.filter_by(arduino_asignado=arduino_actual).all()
     sensormovimiento = Sensor3.query.filter_by(arduino_asignado=arduino_actual).all()
     sensorgas = Sensor4.query.filter_by(arduino_asignado=arduino_actual).all()
 
     #agregar los demas sensores
-    return render_template('ver_datos.html', sensortemp=sensortemp,sensorluminosidad=sensorluminosidad, arduino_actual=arduino_actual, sensormovimiento=sensormovimiento, sensorgas=sensorgas) 
+    return render_template('ver_datos.html', sensortemp=sensortemp,sensorluminosidad=sensorluminosidad, arduino_actual=arduino_actual, sensormovimiento=sensormovimiento, sensorgas=sensorgas,all_arduinos_From_user=all_arduinos_From_user) 
 
 
 @app.route('/verificación_arduino', methods=['GET','POST'])
@@ -266,6 +316,16 @@ def checkeo_datos():
         return ver_datos(arduino_actual)
     
    
+@app.route('/add_arduino', methods=['GET','POST'])
+@login_required
+def add_arduino():
+    user = User.query.filter_by(email=current_user.email).first()
+    
+    if user.roles != 1:
+        errorpage("No tiene permisos para agregar arduinos")
+
+    return render_template('add_arduino.html')
+
 @app.route('/new_arduino', methods=['POST'])
 @login_required
 def asignar_arduino():
