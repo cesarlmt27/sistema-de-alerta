@@ -25,12 +25,12 @@ login_manager = LoginManager()
 
 
 #configuracion del mail
-app.config['MAIL_SERVER']='smtp.mailtrap.io'
-app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = '62935fc9d67a8b'
-app.config['MAIL_PASSWORD'] = 'c2a850cb66913f'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'proyectosenticcct1@gmail.com'
+app.config['MAIL_PASSWORD'] = 'jmxrmrnltxyfhgqo'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
 
@@ -74,6 +74,8 @@ def __init__(self, fecha, temperatura, arduino_asignado):
     self.fecha = fecha
     self.temperatura = temperatura
     self.arduino_asignado = arduino_asignado
+#SACAR HUMEDAD
+
 class Sensor2(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     fecha = db.Column(db.DateTime())
