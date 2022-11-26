@@ -5,7 +5,6 @@
     <link rel="stylesheet" type="text/css" href="/static/tablestyle.css" /> 
     <title>todas las entradas</title>
 </head>
-<h2>Tabla de temperatura</h2>
 <h2>{{arduino_actual}}</h2>
 <div class="table-wrapper">
     <table class="fl-table">
@@ -35,17 +34,60 @@
         <tr>
             <th>#</th>
             <th>Fecha</th>
-            <th>humedad</th>
+            <th>luminosidad</th>
         </tr>
         </thead>
         <tbody>
-            {% for sensor in sensorhumedad %}
+            {% for sensor in sensorluminosidad %}
         <tr>
             <td>{{sensor.id}}</td>
             <td>{{sensor.fecha}}</td>
-            <td>{{sensor.humedad}}</td>
+            <td>{{sensor.luminosidad}}</td>
         </tr>
             {% endfor %}
         <tbody>
     </table>
 </div>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Movimiento</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sensor in sensormovimiento %}
+        <tr>
+            <td>{{sensor.id}}</td>
+            <td>{{sensor.fecha}}</td>
+            <td>{{sensor.movimiento}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Gas</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sensor in sensorgas %}
+        <tr>
+            <td>{{sensor.id}}</td>
+            <td>{{sensor.fecha}}</td>
+            <td>{{sensor.gas}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
+

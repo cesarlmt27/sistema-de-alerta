@@ -46,9 +46,6 @@
           <br /><br />
           <p class="card-text">Alertas en las ultimas 24 horas &emsp;= &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
           <br /><br />
-          <p class="card-text">Desviacion estandar&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-          <br /><br />
-          <p class="card-text">Varianza&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
         </div>
     </div>
 </div>
@@ -67,7 +64,7 @@
             data: {
                 labels: {{labels2 | safe}},
                 datasets: [{
-                    label: 'Humedad',
+                    label: 'luminosidad',
                     data: {{values2 | safe}},
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
@@ -88,13 +85,10 @@
     </div>
     <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title">Humedad</h5>
+          <h5 class="card-title">luminosidad</h5>
           <br /><br />
           <p class="card-text">Alertas en las ultimas 24 horas &emsp;= &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
           <br /><br />
-          <p class="card-text">Desviacion estandar&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-          <br /><br />
-          <p class="card-text">Varianza&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
         </div>
     </div>
 </div>
@@ -111,10 +105,10 @@
         var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: {{labels2 | safe}},
+                    labels: {{labels3 | safe}},
                     datasets: [{
-                        label: 'Humedad',
-                        data: {{values2 | safe}},
+                        label: 'Movimiento',
+                        data: {{values3 | safe}},
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
                         ],
@@ -134,13 +128,10 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Humedad</h5>
+              <h5 class="card-title">Movimiento</h5>
               <br /><br />
               <p class="card-text">Alertas en las ultimas 24 horas &emsp;= &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
               <br /><br />
-              <p class="card-text">Desviacion estandar&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-              <br /><br />
-              <p class="card-text">Varianza&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
             </div>
         </div>
     </div>
@@ -157,10 +148,10 @@
             var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: {{labels2 | safe}},
+                        labels: {{labels4 | safe}},
                         datasets: [{
-                            label: 'Humedad',
-                            data: {{values2 | safe}},
+                            label: 'Gas',
+                            data: {{values4 | safe}},
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
                             ],
@@ -180,64 +171,15 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">Humedad</h5>
+                  <h5 class="card-title">Gas</h5>
                   <br /><br />
                   <p class="card-text">Alertas en las ultimas 24 horas &emsp;= &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-                  <br /><br />
-                  <p class="card-text">Desviacion estandar&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-                  <br /><br />
-                  <p class="card-text">Varianza&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
+
                 </div>
             </div>
         </div>
         </div>
         
         </body>
-        <body>
-            <div class="card bg-dark text-white" >
-            <div class="row">
-                <div class="col-md-4">
-                <canvas id="myChart5" width="400" height="400"></canvas>
-                <script>
-                var ctx = document.getElementById('myChart5').getContext('2d');
-                var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: {{labels2 | safe}},
-                            datasets: [{
-                                label: 'Humedad',
-                                data: {{values2 | safe}},
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                ],
-                                borderWidth: 1
-                           }]
-                        },
-                        options: {
-                            responsive: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                    </script>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">Humedad</h5>
-                      <br /><br />
-                      <p class="card-text">Alertas en las ultimas 24 horas &emsp;= &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-                      <br /><br />
-                      <p class="card-text">Desviacion estandar&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-                      <br /><br />
-                      <p class="card-text">Varianza&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; = &emsp;&emsp;&emsp;&emsp;(zzzzzz)</p>
-                    </div>
-                </div>
-            </div>
-            </div>
-            
-            </body>
 </header>
 {% endblock %}
