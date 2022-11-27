@@ -5,7 +5,17 @@
     <link rel="stylesheet" type="text/css" href="/static/tablestyle.css" /> 
     <title>todas las entradas</title>
 </head>
-<h2>Tabla de temperatura</h2>
+<div>
+    <form method="POST" action="/ver_mas">
+        <label for="arduinos">Tus otros dispositivos:</label>
+        <select name="arduinos" id="arduinos">
+            {% for i in all_arduinos_From_user %}
+            <option value={{i.arduino_asignado}}>{{i.arduino_asignado}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit" />
+  </form>
+</div>
 <h2>{{arduino_actual}}</h2>
 <div class="table-wrapper">
     <table class="fl-table">
@@ -35,17 +45,60 @@
         <tr>
             <th>#</th>
             <th>Fecha</th>
-            <th>humedad</th>
+            <th>luminosidad</th>
         </tr>
         </thead>
         <tbody>
-            {% for sensor in sensorhumedad %}
+            {% for sensor in sensorluminosidad %}
         <tr>
             <td>{{sensor.id}}</td>
             <td>{{sensor.fecha}}</td>
-            <td>{{sensor.humedad}}</td>
+            <td>{{sensor.luminosidad}}</td>
         </tr>
             {% endfor %}
         <tbody>
     </table>
 </div>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Movimiento</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sensor in sensormovimiento %}
+        <tr>
+            <td>{{sensor.id}}</td>
+            <td>{{sensor.fecha}}</td>
+            <td>{{sensor.movimiento}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
+
+<div class="table-wrapper">
+    <table class="fl-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Gas</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sensor in sensorgas %}
+        <tr>
+            <td>{{sensor.id}}</td>
+            <td>{{sensor.fecha}}</td>
+            <td>{{sensor.gas}}</td>
+        </tr>
+            {% endfor %}
+        <tbody>
+    </table>
+</div>
+
