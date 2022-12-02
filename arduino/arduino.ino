@@ -8,6 +8,7 @@ float ldrInput;
 // Sensor de temperatura
 #define TEMP_SENSOR 12
 #define R_LED 4
+float tempInput;
 dht DHT;
 
 // Sensor de gas
@@ -31,56 +32,52 @@ void setup() {
 } 
 
 
-void light() {
+float light() {
     ldrInput = analogRead(LDR);
 
   if(ldrInput >= 600) {
     digitalWrite(G_LED, HIGH);
-    Serial.println("LED ON");
-    Serial.println(ldrInput);
   }else {
     digitalWrite(G_LED, LOW);
-    Serial.println("LED OFF");
-    Serial.println(ldrInput);
   }
-  delay(1000);
+
+  return ldrInput;
 }
 
-void temperature() {
+float temperature() {
     int chk = DHT.read11(TEMP_SENSOR);
 
-  switch(chk) {
-    case DHTLIB_OK:
-      Serial.print("OK,\t"); 
-      break;
-    case DHTLIB_ERROR_CHECKSUM:
-      Serial.print("Checksum error,\t"); 
-      break;
-    case DHTLIB_ERROR_TIMEOUT:
-      Serial.print("Time out error,\t"); 
-      break;
-    case DHTLIB_ERROR_CONNECT:
-      Serial.print("Connect error,\t");
-      break;
-    case DHTLIB_ERROR_ACK_L:
-      Serial.print("Ack Low error,\t");
-      break;
-    case DHTLIB_ERROR_ACK_H:
-      Serial.print("Ack High error,\t");
-      break;
-    default:
-      Serial.print("Unknown error,\t"); 
-      break;
-  }
+    switch(chk) {
+        case DHTLIB_OK:
+            Serial.print("OK,\t");
+            break;
+        case DHTLIB_ERROR_CHECKSUM:
+            Serial.print("Checksum error,\t");
+            break;
+        case DHTLIB_ERROR_TIMEOUT:
+            Serial.print("Time out error,\t");
+            break;
+        case DHTLIB_ERROR_CONNECT:
+            Serial.print("Connect error,\t");
+            break;
+        case DHTLIB_ERROR_ACK_L:
+            Serial.print("Ack Low error,\t");
+            break;
+        case DHTLIB_ERROR_ACK_H:
+            Serial.print("Ack High error,\t");
+            break;
+        default:
+            Serial.print("Unknown error,\t");
+            break;
+    }
 
-  Serial.println(DHT.temperature, 1);
+    //Serial.println(DHT.temperature, 1);
 
-  delay(2000);
+    return DHT.temperature;
 }
 
-void gas() {
+float gas() {
     gasInput = analogRead(GAS_SENSOR);
-    Serial.println(gasInput);
   
     if(gasInput > 600){
         digitalWrite(LED, HIGH);
@@ -88,23 +85,48 @@ void gas() {
         digitalWrite(LED,LOW);
     }
 
-    delay(500);
+    return gasInput;
 }
 
-void movement() {
+boolean movement() {
   pirInput = digitalRead(PIR);
 
   if(pirInput == HIGH){
     digitalWrite(Y_LED, HIGH);
-    Serial.println(pirInput);
   }else{
     digitalWrite(Y_LED,LOW);
-    Serial.println(pirInput);
   }
+
+  return pirInput;
 }
 
 
 void loop() {
-    temperature();
-    light();
+    ldrInput = light();
+    Serial.print("ADC Arduino (Nivel de luz): ");
+    Serial.println(ldrInput);
+    delay(2000);
+
+    Serial.println();
+
+    tempInput = temperature();
+    Serial.print("Temperatura: ");
+    Serial.println(tempInput, 1);
+    delay(2000);
+
+    Serial.println();
+
+    gasInput = gas();
+    Serial.print("Gas (?): ");
+    Serial.println(gasInput);
+    delay(2000);
+
+    Serial.println();
+
+    pirInput = movement();
+    Serial.print("Movimiento: ");
+    Serial.println(pirInput);
+    delay(2000);
+
+    Serial.println("------");
 }
