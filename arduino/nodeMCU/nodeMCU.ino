@@ -1,16 +1,14 @@
 #include <ESP8266WiFi.h>
-
-String ssid = "";
-String password = "";
+#include "myNetwork.h"
 
 byte counter = 0;
 byte limit = 20;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println();
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password); // "ssid" y "password" son String que están declarados en "myNetwork.h"
 
   Serial.print("Connecting");
   
@@ -36,4 +34,15 @@ void setup() {
   }
 }
 
-void loop() {}
+
+void receive() {
+  if(Serial.available()) {
+    Serial.write(Serial.read());
+  }
+
+}
+
+
+void loop() {
+  receive();
+}
