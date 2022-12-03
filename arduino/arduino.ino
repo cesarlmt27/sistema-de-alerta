@@ -1,4 +1,11 @@
+#include <SoftwareSerial.h>
 #include <dht.h>
+
+// NodeMCU
+const byte rxPin = 5;
+const byte txPin = 6;
+String str;
+SoftwareSerial espSerial(rxPin, txPin);
 
 // Sensor de luminosidad
 #define LDR A0
@@ -24,6 +31,7 @@ boolean pirInput;
 
 void setup() {
   Serial.begin(9600);
+  espSerial.begin(115200);
   pinMode(G_LED, OUTPUT);
   pinMode(R_LED, OUTPUT);
   pinMode(LED, OUTPUT);
@@ -31,6 +39,11 @@ void setup() {
   pinMode(PIR, INPUT);
 } 
 
+
+void send(float ldrInput, float tempInput, float gasInput, float pirInput) {
+  str = String(ldrInput) + "," + String(tempInput) + "," + String(gasInput) + "," + String(pirInput);
+  espSerial.println(str);
+}
 
 float light() {
     ldrInput = analogRead(LDR);
@@ -105,27 +118,30 @@ void loop() {
     ldrInput = light();
     Serial.print("ADC Arduino (Nivel de luz): ");
     Serial.println(ldrInput);
-    delay(2000);
+    delay(500);
 
     Serial.println();
 
     tempInput = temperature();
     Serial.print("Temperatura: ");
     Serial.println(tempInput, 1);
-    delay(2000);
+    delay(500);
 
     Serial.println();
 
     gasInput = gas();
     Serial.print("Gas (?): ");
     Serial.println(gasInput);
-    delay(2000);
+    delay(500);
 
     Serial.println();
 
     pirInput = movement();
     Serial.print("Movimiento: ");
     Serial.println(pirInput);
+    delay(500);
+
+    send(ldrInput, tempInput, gasInput, pirInput);
     delay(2000);
 
     Serial.println("------");
