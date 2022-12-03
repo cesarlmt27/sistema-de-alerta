@@ -1,2 +1,3 @@
 .vscode
 bin
+arduino/nodeMCU/myNetwork.h
