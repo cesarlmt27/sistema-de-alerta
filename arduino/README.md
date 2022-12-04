@@ -1,7 +1,7 @@
 # Códigos de Arduino y NodeMCU
 
 ### Estructura de `networkData.h`:
-Este código es para usarlo con `nodeMCU.ino`.
+Este archivo es para usarlo con `nodeMCU.ino`.
 ```c++
 #include <Arduino.h>
 
