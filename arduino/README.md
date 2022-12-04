@@ -1,6 +1,7 @@
 # Códigos de Arduino y NodeMCU
 
-### Estructura de `networkData.h`
+### Estructura de `networkData.h`:
+Este archivo de debe crear dentro del directorio `nodeMCU`.
 ```c++
 #include <Arduino.h>
 
