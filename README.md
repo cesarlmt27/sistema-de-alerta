@@ -2,7 +2,7 @@
 Sistema de alerta para el cuidado de adultos mayores
 
 ### Estructura de `networkData.h`
-```
+```c++
 #include <Arduino.h>
 
 // Red a conectar el NodeMCU
