@@ -41,7 +41,7 @@ void setup() {
 
 
 void send(float ldrInput, float tempInput, float gasInput, float pirInput) {
-  str = String(ldrInput) + "," + String(tempInput) + "," + String(gasInput) + "," + String(pirInput);
+  str = "ldrInput=" + String(ldrInput) + "&tempInput=" + String(tempInput) + "&gasInput=" + String(gasInput) + "&pirInput=" + String(pirInput);
   espSerial.println(str);
 }
 
@@ -141,8 +141,8 @@ void loop() {
     Serial.println(pirInput);
     delay(500);
 
+    delay(1000);
     send(ldrInput, tempInput, gasInput, pirInput);
-    delay(2000);
 
     Serial.println("------");
 }
