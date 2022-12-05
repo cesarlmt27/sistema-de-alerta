@@ -42,7 +42,7 @@ void setup() {
 
 void send(float ldrInput, float tempInput, float gasInput, float pirInput) {
   str = "ldrInput=" + String(ldrInput) + "&tempInput=" + String(tempInput) + "&gasInput=" + String(gasInput) + "&pirInput=" + String(pirInput);
-  espSerial.println(str);
+  espSerial.print(str);
 }
 
 float light() {
