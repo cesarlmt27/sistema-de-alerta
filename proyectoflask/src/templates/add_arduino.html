@@ -14,7 +14,7 @@
                         <label for="arduinos sin dueño">seleccione uno de estos arduinos sin dueños para usted:</label>
                         <select name="arduinos sin dueño" id="arduinos sin dueño">
                             {% for i in all_owner_without_user %}
-                            <option value={{i.name}}>{{i.name}}</option>
+                            <option value={{i.arduino_asignado}}>{{i.arduino_asignado}}</option>
                             {% endfor %}
                         </select>
                         
