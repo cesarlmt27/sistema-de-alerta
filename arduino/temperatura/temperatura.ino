@@ -1,9 +1,8 @@
-//Código de la simulación en Tinkercad
+#include <dht.h>
 
-#define TEMP_SENSOR A1
+#define TEMP_SENSOR 12
 #define R_LED 4
-float tempValue;
-float tempInput;
+dht DHT;
 
 void setup() {
   Serial.begin(9600);
@@ -11,13 +10,33 @@ void setup() {
 }
 
 void loop() {
-  tempInput = analogRead(TEMP_SENSOR);
-  tempValue = (((5.0/1024.0) * tempInput) * 100.0) - 50.0;
+  int chk = DHT.read11(TEMP_SENSOR);
 
-  if(tempValue >= 20) {
-   digitalWrite(R_LED, HIGH);
-  }else{
-    digitalWrite(R_LED, LOW);
+  switch(chk) {
+    case DHTLIB_OK:
+      Serial.print("OK,\t"); 
+      break;
+    case DHTLIB_ERROR_CHECKSUM:
+      Serial.print("Checksum error,\t"); 
+      break;
+    case DHTLIB_ERROR_TIMEOUT:
+      Serial.print("Time out error,\t"); 
+      break;
+    case DHTLIB_ERROR_CONNECT:
+      Serial.print("Connect error,\t");
+      break;
+    case DHTLIB_ERROR_ACK_L:
+      Serial.print("Ack Low error,\t");
+      break;
+    case DHTLIB_ERROR_ACK_H:
+      Serial.print("Ack High error,\t");
+      break;
+    default:
+      Serial.print("Unknown error,\t"); 
+      break;
   }
-  delay(500);
+
+  Serial.println(DHT.temperature, 1);
+
+  delay(2000);
 }
