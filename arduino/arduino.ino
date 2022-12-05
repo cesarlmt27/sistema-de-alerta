@@ -130,7 +130,7 @@ void loop() {
     Serial.println();
 
     gasInput = gas();
-    Serial.print("Gas (?): ");
+    Serial.print("Gas: ");
     Serial.println(gasInput);
     delay(500);
 
