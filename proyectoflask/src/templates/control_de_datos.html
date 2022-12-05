@@ -1,0 +1,74 @@
+{% extends "layouts/layout1.html" %}
+{% block content %}
+<header class="masthead bg-dark text-white text-center">
+    
+<div class="row">
+    <div class="container d-flex align-items-center flex-column">
+        <img class="masthead-avatar mb-5" src="/static/Config.png" alt="..." />
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+            </style>
+            </head>
+            <body>
+            </p>
+            <h2>Usuarios</h2>
+        </p>
+            <table>
+              <tr>
+                
+                <th>ID User</th>
+                <th>Email User</th>
+                <th>Role User</th>
+              </tr>
+
+              {% for i in all_users %}
+              <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.email}}</td>
+                <td>{{i.roles}}</td>
+              </tr>
+              {% endfor %}
+            </table>
+        </p>
+            <h2>Dueños de dispositivos</h2>
+        </p>
+            <table>
+                <tr>
+                  
+                  <th>serial de dispositivo</th>
+                  <th>Descripcion</th>
+                </tr>
+  
+                {% for i in all_arduinos %}
+                <tr>
+                  <td>{{i.name}}</td>
+                  <td>{{i.description}}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </p>
+              <form method="POST" action="/administrar">
+                <label for="administrar">Selecciona que datos quieres administrar:</label>
+                <select name="seleccion" id="seleccion">
+                    <option value=1>Cambiar parametro de arduino</option> 
+                    <option value=2>Cambiar rol de un usuario</option> 
+
+                </select>
+                <input type="submit" value="Submit" />
+            </form>      
+        </div>
+        
+        <!-- Icon Divider-->
+        <!-- Masthead Subheading-->
+    </div>
+</div>
+
+</header>
+
+        {% endblock %}
+
+
+

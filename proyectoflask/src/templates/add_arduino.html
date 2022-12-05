@@ -5,14 +5,22 @@
         <!-- Masthead Avatar Image-->
         <img class="masthead-avatar mb-5" src="/static/logo.jpg" alt="..." />
         <!-- Masthead Heading-->
-        <h1 class="masthead-heading text-uppercase mb-0">Añada un arduino antes de continuar</h1>
+        <h1 class="masthead-heading text-uppercase mb-0">Asignador de arduinos</h1>
         
         <div class="login-page">
             <div class="form">
-                <form method="POST" action="/new_arduino">
-                    <input type="text" name= "arduino" placeholder="#nombrearduino"/>
-                    <input type="submit" />
-                </form>
+                <div>
+                    <form method="POST" action="/update_asignacion">
+                        <label for="arduinos sin dueño">seleccione uno de estos arduinos sin dueños para usted:</label>
+                        <select name="arduinos sin dueño" id="arduinos sin dueño">
+                            {% for i in all_owner_without_user %}
+                            <option value={{i.name}}>{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
               </form>
             </div>
         </div>

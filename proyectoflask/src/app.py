@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_login import LoginManager, current_user
 from datetime import datetime, timezone
 from sqlalchemy import literal
 import pytz
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message 
 
 #HAY QUE:
 #1.- asignar todos los nuevos sensores y poder graficarlos + sus datos de distribucion
@@ -56,6 +56,7 @@ class User(db.Model, UserMixin):
 #sensor asignado a un Arduino
 #completar arduino
 
+#esta tabla al final se usa para tener un control de datos
 class Arduino(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
@@ -155,8 +156,8 @@ def utc_to_local(utc_dt):
     
 #create a user to test with
 
-    
 
+#before first req
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -168,7 +169,8 @@ def checkeo_datos_graficos():
     owner = Owner.query.filter_by(owner_id=user.id).first()
 
     if owner == None:
-        return render_template('add_arduino.html')
+        return errorpage("No tiene un arduino que analizar")
+
     else:
 
         #se entregan datos de sensores
@@ -211,16 +213,111 @@ def ver_graficos(arduino_actual):
 
 @app.route('/ver_mas_graficos', methods=['GET','POST'])
 @login_required
-def sellecionararduino_graficos():
+def seleccionararduino_graficos():
     arduino_actual = request.form['arduinos']
     
     return ver_graficos(arduino_actual)
 
-
-@app.route('/test_add_values', methods=['GET', 'POST'])
+@app.route('/control', methods=['GET', 'POST'])
 @login_required
-def test_add_values():
-    return render_template('test_add_values.html')
+def control():
+    this_user = User.query.filter_by(email=current_user.email).first()
+    if this_user.roles != 1:
+        return errorpage("No tiene permisos para agregar arduinos")
+    all_users = User.query.all()
+    all_arduinos = Arduino.query.all()
+    return render_template('control_de_datos.html', all_users=all_users, all_arduinos=all_arduinos)
+
+@app.route('/administrar', methods=['GET','POST'])
+@login_required
+def administrar():
+    this_user = User.query.filter_by(email=current_user.email).first()
+    if this_user.roles != 1:
+        return errorpage("No tiene permisos para agregar arduinos")
+
+    seleccion = request.form['seleccion']
+
+    if seleccion == "1":
+        todoslosparametros = parametrosalerta.query.all()
+        return render_template('cambiarparametro1.html', todoslosparametros=todoslosparametros)
+    
+    if seleccion == "2":
+        todoslosroles = Role.query.all()
+        all_users = User.query.all()
+    return render_template('cambiarroles.html', todoslosroles=todoslosroles, all_users=all_users)
+    
+
+@app.route('/cambiarparametroespecifico', methods=['GET','POST'])
+@login_required
+def cambiarparametrosesp():
+    this_user = User.query.filter_by(email=current_user.email).first()
+    if this_user.roles != 1:
+        return errorpage("No tiene permisos para agregar arduinos")    
+
+    seleccion = request.form['seleccion']
+    seleccionpar = request.form['seleccionpar']
+    if seleccionpar == "1":
+        newMin = request.form['parmin']
+        newMax = request.form['parmax']
+        parametro = parametrosalerta.query.filter_by(arduino_asignado=seleccion).first()
+        parametro.temperaturamin = newMin
+        parametro.temperaturamax = newMax
+        db.session.commit()
+        all_users = User.query.all()
+        all_arduinos = Arduino.query.all()
+        return render_template('control_de_datos.html', all_users=all_users, all_arduinos=all_arduinos)
+    
+    if seleccionpar == "2":
+        newMin = request.form['parmin']
+        newMax = request.form['parmax']
+        parametro = parametrosalerta.query.filter_by(arduino_asignado=seleccion).first()
+        parametro.gasminimo = newMin
+        parametro.gasmaximo = newMax
+        db.session.commit()
+        all_users = User.query.all()
+        all_arduinos = Arduino.query.all()
+        return render_template('control_de_datos.html', all_users=all_users, all_arduinos=all_arduinos)
+    
+    if seleccionpar == "3":
+        newMin = request.form['parmin']
+        newMax = request.form['parmax']
+        parametro = parametrosalerta.query.filter_by(arduino_asignado=seleccion).first()
+        parametro.luminosidadmin = newMin
+        parametro.luminosidadmax = newMax
+        db.session.commit()
+        all_users = User.query.all()
+        all_arduinos = Arduino.query.all()
+        return render_template('control_de_datos.html', all_users=all_users, all_arduinos=all_arduinos)
+
+@app.route('/cambiarrolesp', methods=['GET','POST'])
+@login_required
+def cambiarrolesp():
+    this_user = User.query.filter_by(email=current_user.email).first()
+    if this_user.roles != 1:
+        return errorpage("No tiene permisos para agregar arduinos")
+    userselect = request.form['userselect']
+    seleccionrol = request.form['seleccionrol']
+    
+    if seleccionrol == "a":
+        user = User.query.filter_by(email=userselect).first()
+        user.roles = list(Role.query.filter(Role.name == 'cliente'))
+        db.session.commit()
+        todoslosroles = Role.query.all()
+        all_users = User.query.all()
+        return render_template('cambiarroles.html', todoslosroles=todoslosroles, all_users=all_users)
+    
+    if seleccionrol == "b":
+        user = User.query.filter_by(email=userselect).first()
+        user.roles = list(Role.query.filter(Role.name == 'admin'))
+        db.session.commit()
+        todoslosroles = Role.query.all()
+        all_users = User.query.all()
+        return render_template('cambiarroles.html', todoslosroles=todoslosroles, all_users=all_users)
+    
+   
+    
+
+
 
 @app.route('/errorpage', methods=['GET', 'POST'])
 @login_required
@@ -228,44 +325,13 @@ def errorpage(descripcionerror):
     return render_template('error.html', descripcionerror=descripcionerror)
 
 
-#POSIBLEMENTE HAY QUE ELIMINAR ESTA FUNCION
-@app.route('/test_add_data', methods=['POST'])
-@login_required
-def test_add_data():
-    if request.form['num']== '1':
-        
-        data2 = request.form['temp']
-        fecha = datetime.utcnow()
-        arduino_asignado = request.form['arduino_asignado']
-        new_sensor1 = Sensor1(fecha=fecha, temperatura=data2, arduino_asignado= arduino_asignado)
-        db.session.add(new_sensor1)
-        db.session.commit()
 
-        return render_template('index.html')
-        
-    if request.form['num']== '2':
+def alerta_mail(correoalerta, descripcionalerta):
 
-        data2 = request.form['temp']
-        fecha = datetime.utcnow()
-        arduino_asignado = request.form['arduino_asignado']
-        new_sensor2 = Sensor2(fecha=fecha, luminosidad=data2, arduino_asignado= arduino_asignado)
-        db.session.add(new_sensor2)
-        db.session.commit()
+    msg = Message(descripcionalerta, sender = 'noreply@demo.com', recipients = correoalerta)
+    msg.body = "La temperatura ha superado el limite establecido"
+    mail.send(msg)
 
-        return render_template('index.html')
-
-    return render_template('index.html')
-
-#ENVIO DE CORREO
-@app.route('/alerta_mail', methods=['GET', 'POST'])
-@login_required
-def alerta_mail():
-    if request.method == 'POST':
-        msg = Message('Alerta de temperatura', sender = 'noreply@demo.com', recipients = [current_user.email])
-        msg.body = "La temperatura ha superado el limite establecido"
-        mail.send(msg)
-        return "Mail enviado"
-    return render_template('index.html')
         
 
 #EL EN FUTURO RENDERIZAR OTRA DIRECCION HTML EN LA QUE DIGA SE HAN ENCONTRADO X ALERTAS 
@@ -320,11 +386,27 @@ def checkeo_datos():
 @login_required
 def add_arduino():
     user = User.query.filter_by(email=current_user.email).first()
-    
-    if user.roles != 1:
-        errorpage("No tiene permisos para agregar arduinos")
 
-    return render_template('add_arduino.html')
+    all_owner_without_user = Owner.query.filter_by(owner_id=None).all()
+    #esto no hay problema que la verdad tambien pueda hacerlo un user normal
+    if user.roles != 1:
+        return errorpage("No tiene permisos para agregar arduinos")
+
+    return render_template('add_arduino.html', all_owner_without_user=all_owner_without_user)
+
+@app.route('/update_asignacion', methods=['GET','POST'])
+@login_required
+def update_asignacion():
+    arduino_actual = request.form['arduinos sin dueño']
+    selected_arduino = Owner.query.filter_by(arduino_asignado=arduino_actual).first()
+    selected_arduino.owner_id = current_user.id
+    db.session.commit()
+
+    #crear parametros de alerta
+    new_parametrosalerta = parametrosalerta(temperaturamin=15,temperaturamax=30,gasminimo=0,gasmaximo=600,movimiento=True,luminosidadmax=807,luminosidadmin=726,arduino_asignado=arduino_actual)
+
+    return render_template('/index.html')
+
 
 @app.route('/new_arduino', methods=['POST'])
 @login_required
@@ -345,6 +427,73 @@ def asignar_arduino():
     
     return render_template('index.html')
 
+#POST ARDUINO ENVIANDO SEÑAL
+@app.route('/arduinosignal', methods=['POST'])
+def arduinosignal():
+    if request.method == 'POST':
+
+        data = request.form
+        arduino_asignado = data['serialInput']
+
+        temp = data['tempInput']
+        fecha = datetime.utcnow()
+        new_sensor1 = Sensor1(fecha=fecha, temperatura=data2, arduino_asignado= arduino_asignado)
+        db.session.add(new_sensor1)
+        db.session.commit()
+        #
+        ldr = data['ldrInput']
+        fecha = datetime.utcnow()
+        new_sensor2 = Sensor2(fecha=fecha, luminosidad=data2, arduino_asignado= arduino_asignado)
+        db.session.add(new_sensor2)
+        db.session.commit()
+        #
+        pir = data['pirInput']
+        fecha = datetime.utcnow()
+        new_sensor3 = Sensor3(fecha=fecha, movimiento=data2, arduino_asignado= arduino_asignado)
+        db.session.add(new_sensor3)
+        db.session.commit()
+        #
+        gas = data['gasInput']
+        fecha = datetime.utcnow()
+        new_sensor4 = Sensor4(fecha=fecha, gas=data2, arduino_asignado= arduino_asignado)
+        db.session.add(new_sensor4)
+        db.session.commit()
+        
+
+        #se revisa si el arduino tiene dueño si no, se va a la pagina de asignacion
+        arduino = Arduino.query.filter_by(name=arduino_asignado).first()
+        if arduino == None:
+            #crear arduino sin dueño
+            new_arduino = Arduino(name=arduino_asignado, description= "Arduino sin dueño")
+            db.session.add(new_arduino)
+            db.session.commit()
+            new_owner = Owner(arduino_asignado=arduino_asignado)
+            db.session.add(new_owner)
+            db.session.commit()
+
+
+        #search in parametrosalerta
+        parametros = parametrosalerta.query.filter_by(arduino_asignado=arduino_asignado).first()
+        owner = Owner.query.filter_by(arduino_asignado=arduino_asignado).first()
+        mensaje = ""
+        if parametros == None:
+            return jsonify(data)       
+        else:
+            #se revisa si hay alertas
+            if temp > parametros.temperaturamax or temp < parametros.temperaturamin:
+                mensaje = mensaje + "Temperatura No ideal, "
+            if ldr > parametros.luminosidadmax or ldr < parametros.luminosidadmin:
+                mensaje = mensaje + "Luminosidad No ideal, "
+            if pir == parametros.movimiento:
+                mensaje = mensaje + "Movimiento detectado, "
+            if gas > parametros.gasmaximo or gas < parametros.gasminimo:
+                mensaje = mensaje + "Gas No ideal "
+            if mensaje != "":
+                mensaje = mensaje + "en el dispositivo " + arduino_asignado
+                #se envia correo con la funcion alerta_mail()
+                alerta_mail(mensaje, owner.owner_id)
+
+    return jsonify(data)
 #info de usuario -NO TERMINADO-
 @app.route('/profile/<string:email>')
 @login_required
@@ -354,4 +503,4 @@ def profile(email):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
