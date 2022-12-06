@@ -9,6 +9,7 @@ HTTPClient http;
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
   Serial.println();
 
   WiFi.begin(ssid, password); // "ssid" y "password" son String que están declarados en "networkData.h"
@@ -36,6 +37,7 @@ void setup() {
 void receive() {
   if(Serial.available()) {
     data = Serial.readString();
+    data = data + "&serialInput=" + String(WiFi.macAddress());
     send(data);
   }
 }
@@ -47,12 +49,16 @@ void send(String data) {
     
     int responseCode = http.POST(data);
 
+    Serial.println(data);
+
     if(responseCode > 0) {
+      digitalWrite(LED_BUILTIN, LOW);
       Serial.print("HTTP Response code: ");
       Serial.println(responseCode);
       String payload = http.getString();
       Serial.println(payload);
     }else {
+      digitalWrite(LED_BUILTIN, HIGH);
       Serial.print("Error code: ");
       Serial.println(responseCode);
     }
