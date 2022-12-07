@@ -21,7 +21,6 @@
     <table class="fl-table">
         <thead>
         <tr>
-            <th>#</th>
             <th>Fecha</th>
             <th>Temperatura</th>
         </tr>
@@ -30,7 +29,6 @@
             
             {% for i in sensortemp %}
         <tr>
-            <td>{{i.id}}</td>
             <td>{{i.fecha}}</td>
             <td>{{i.temperatura}}</td>
         </tr>
@@ -43,7 +41,6 @@
     <table class="fl-table">
         <thead>
         <tr>
-            <th>#</th>
             <th>Fecha</th>
             <th>luminosidad</th>
         </tr>
@@ -51,7 +48,6 @@
         <tbody>
             {% for sensor in sensorluminosidad %}
         <tr>
-            <td>{{sensor.id}}</td>
             <td>{{sensor.fecha}}</td>
             <td>{{sensor.luminosidad}}</td>
         </tr>
@@ -64,7 +60,6 @@
     <table class="fl-table">
         <thead>
         <tr>
-            <th>#</th>
             <th>Fecha</th>
             <th>Movimiento</th>
         </tr>
@@ -72,7 +67,6 @@
         <tbody>
             {% for sensor in sensormovimiento %}
         <tr>
-            <td>{{sensor.id}}</td>
             <td>{{sensor.fecha}}</td>
             <td>{{sensor.movimiento}}</td>
         </tr>
@@ -85,7 +79,6 @@
     <table class="fl-table">
         <thead>
         <tr>
-            <th>#</th>
             <th>Fecha</th>
             <th>Gas</th>
         </tr>
@@ -93,7 +86,6 @@
         <tbody>
             {% for sensor in sensorgas %}
         <tr>
-            <td>{{sensor.id}}</td>
             <td>{{sensor.fecha}}</td>
             <td>{{sensor.gas}}</td>
         </tr>
