@@ -51,7 +51,7 @@ void send(String data) {
 
     Serial.println(data);
 
-    if(responseCode > 0) {
+    if(responseCode > 0 || responseCode == -11) {
       digitalWrite(LED_BUILTIN, LOW);
       Serial.print("HTTP Response code: ");
       Serial.println(responseCode);
@@ -72,6 +72,12 @@ void send(String data) {
 
 
 void loop() {
-  delay(1000);
-  receive();
+  if(WiFi.status() == WL_CONNECTED) {
+    delay(1000);
+    receive();
+  }else {
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("Wi-Fi Disconnected");
+    delay(2000);
+  }  
 }
